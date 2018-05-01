@@ -11,9 +11,8 @@ public class NetworkMain {
 		try(ServerSocket server=new ServerSocket(8071,10,InetAddress.getLocalHost())) {
 			System.out.println("initialized: " + server.getInetAddress());
 			while(true) {
-				Socket socket=server.accept();//�������� ����������� �������
+				Socket socket=server.accept();
 				System.out.println(socket.getInetAddress() + " connected");
-				//�������� ���������� ������ ��� ������ ������� � ������������� ��������
 				ServerThread thread = new ServerThread(socket);
 				thread.start();
 				System.out.println(socket.getInetAddress() + " � "+ServerThread.getCounter()+ " started");
