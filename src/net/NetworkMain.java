@@ -15,7 +15,7 @@ public class NetworkMain {
 				System.out.println(socket.getInetAddress() + " connected");
 				ServerThread thread = new ServerThread(socket);
 				thread.start();
-				System.out.println(socket.getInetAddress() + " � "+ServerThread.getCounter()+ " started");
+				System.out.println(socket.getInetAddress() + " № "+ServerThread.getCounter()+ " started");
 			}
 		}catch (IOException e) {
 			e.printStackTrace();

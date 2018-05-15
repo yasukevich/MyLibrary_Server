@@ -3,8 +3,12 @@ package net;
 import model.Library;
 
 import java.net.Socket;
+
+import db.DataBaseHelper;
+
 import java.net.InetAddress;
 import java.io.*;
+import java.net.SocketException;
 
 public class ServerThread extends Thread{
 	private PrintStream os;
@@ -14,12 +18,15 @@ public class ServerThread extends Thread{
 	ObjectInputStream cois = null;
 	ObjectOutputStream coos =null;
 	Responce responce=new Responce();
+	DataBaseHelper dbHelper;
 
 	public ServerThread(Socket s) {
 		try {
+			dbHelper=new DataBaseHelper();
 			cois =new ObjectInputStream(s.getInputStream());
 			coos =new ObjectOutputStream(s.getOutputStream());
 			is = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			dbHelper.getDBConnection();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,15 +38,14 @@ public class ServerThread extends Thread{
 	public void run() {
         int choise;
 		try {
-			while(true) {
-				responce = (Responce) cois.readObject();
+			while((responce = (Responce) cois.readObject())!=null) {
+				/*responce = (Responce) cois.readObject();*/
 				choise = responce.getChoise();
 				switch (choise) {
-					case 1: { System.out.println("Case 1");/*coos.writeObject("������ �����������"); coos.flush();*/
+					case 1: { System.out.println("Case 1");dbHelper.getDBConnection();/*coos.writeObject("������ �����������"); coos.flush();*/
 						break;
 					}
-					case 2: { /*myLib.addAllStorages(); myLib.workWhithStorages(choise);*/
-						System.out.println("Case 2");
+					case 2: { System.out.println("Case 2"); dbHelper.getDBConnection();
 						/*coos.writeObject(myLib);*/
 						coos.flush();
 						break;
