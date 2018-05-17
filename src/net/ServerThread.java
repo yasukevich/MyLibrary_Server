@@ -52,8 +52,7 @@ public class ServerThread extends Thread{
 						break;
 					}
 					case 2: {
-						System.out.println("Case 2");
-						/*coos.writeObject(myLib);*/
+						System.out.println("Case 2"); /*coos.writeObject(myLib);*/
 						//coos.flush();
 						break;
 					}
