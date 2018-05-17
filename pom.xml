@@ -16,11 +16,11 @@
       </plugin>
     </plugins>
   </build>
-  <!--<dependencies>
+  <dependencies>
     <dependency>
-      <groupId>oracle</groupId>
-      <artifactId>oracle-connector-java</artifactId>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
       <version>5.1.6</version>
-   </dependency>
-  </dependencies>-->
+    </dependency>
+  </dependencies>
 </project>

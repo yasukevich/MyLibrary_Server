@@ -9,6 +9,7 @@ import db.DataBaseHelper;
 import java.net.InetAddress;
 import java.io.*;
 import java.net.SocketException;
+import java.sql.Connection;
 
 public class ServerThread extends Thread{
 	private PrintStream os;
@@ -17,16 +18,18 @@ public class ServerThread extends Thread{
 	private static int counter=0;
 	ObjectInputStream cois = null;
 	ObjectOutputStream coos =null;
-	Responce responce=new Responce();
+	Request request=new Request();
 	DataBaseHelper dbHelper;
+	Connection dbConnection;
 
 	public ServerThread(Socket s) {
 		try {
-			dbHelper=new DataBaseHelper();
+			dbHelper=DataBaseHelper.getInstance();
 			cois =new ObjectInputStream(s.getInputStream());
 			coos =new ObjectOutputStream(s.getOutputStream());
 			is = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			dbHelper.getDBConnection();
+			dbConnection=dbHelper.getDBConnection();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,16 +41,20 @@ public class ServerThread extends Thread{
 	public void run() {
         int choise;
 		try {
-			while((responce = (Responce) cois.readObject())!=null) {
+			while((request = (Request) cois.readObject())!=null) {
 				/*responce = (Responce) cois.readObject();*/
-				choise = responce.getChoise();
+				choise = request.getChoise();
 				switch (choise) {
-					case 1: { System.out.println("Case 1");dbHelper.getDBConnection();/*coos.writeObject("������ �����������"); coos.flush();*/
+					case 1: {
+						System.out.println("Case 1");
+						dbHelper.isLogin(request.getUser().getName(),request.getUser().getPass());
+					/*coos.writeObject("������ �����������"); coos.flush();*/
 						break;
 					}
-					case 2: { System.out.println("Case 2"); dbHelper.getDBConnection();
+					case 2: {
+						System.out.println("Case 2");
 						/*coos.writeObject(myLib);*/
-						coos.flush();
+						//coos.flush();
 						break;
 					}
 					default: {}
@@ -62,7 +69,6 @@ public class ServerThread extends Thread{
 		
 	public void disconnect() {
 		try {
-
 			if (is != null) { is.close(); }
 			if (cois != null) cois.close();
 			if (coos != null) coos.close();

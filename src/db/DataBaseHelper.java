@@ -6,12 +6,23 @@ import java.sql.SQLException;
 
 public class DataBaseHelper {
 
+    private static DataBaseHelper _instance=null;
+
     private Connection dbConnection;
+
+    //private DataBaseHelper(){}
+
+    public static DataBaseHelper getInstance() {
+        if (_instance == null) {
+            _instance = new DataBaseHelper();
+        }
+        return _instance;
+    }
 
 	public Connection getDBConnection() {
         if(dbConnection == null){
             try {
-                Class.forName("oracle.jdbc.driver.OracleDriver");
+                Class.forName("com.mysql.jdbc.Driver");
                 System.out.println("Драйвер подключен");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -19,8 +30,8 @@ public class DataBaseHelper {
                 System.out.println(e.getMessage());
             }
             try {
-                dbConnection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.56.101:1521:ocp12g", "librarian", "oracle");
-                System.out.println("Connection to Oracle has been established.");
+                dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "oracle");
+                System.out.println("Connection to MySql has been established.");
                 return dbConnection;
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -29,30 +40,9 @@ public class DataBaseHelper {
         return this.dbConnection;
     }
 
-   /* public Connection getConnection(){
-        Connection connection = null;
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            System.out.println("Драйвер подключен");
 
+   public boolean isLogin(String name,String pass){
 
-        } catch (ClassNotFoundException e) {
-            System.out.print("ERROR!DRIVER");
-        }
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            connection = DriverManager.getConnection(DB_DRIVER,DB_USERNAME,DB_PASSWORD);
-            System.out.print("ПОДКЛЮЧЕНИЕ");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Alert erorconnect = new Alert(Alert.AlertType.INFORMATION);       //Сообщение об ошибке
-            erorconnect.setTitle("Ошибка подключения");
-            erorconnect.setHeaderText(null);
-            erorconnect.setContentText("Не удалось подключиться к базе данных");
-            erorconnect.showAndWait();
-        }
-
-        return connection;
-    }*/
+        return true;
+   }
 }
